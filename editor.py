@@ -25,14 +25,11 @@ def search_files(folder_path, extension):
 
     return found_files
 
-# Укажите путь к папке и расширение файлов, которые вы ищете
 folder_path = 'IMG/INPUT'
 file_extension = '.pdf'  # Например, для поиска текстовых файлов
 
-# Вызов функции поиска файлов
 result = search_files(folder_path, file_extension)
 
-# Вывод найденных файлов (только имена)
 if result:
 
     print("Найденные файлы:")
