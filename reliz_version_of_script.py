@@ -852,4 +852,4 @@ if __name__ == '__main__':
 
             os.remove(file_path)
 
-            print(f"Файл '{file_name}' удален.")
+            print(f"Файл '{file_name}' удален")
