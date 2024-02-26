@@ -35,7 +35,7 @@ def convert_png_to_pdf(png_files, output_pdf_path):
 
         pdf_file.write(img2pdf.convert(png_files))
 
-async def photo_searcher(name_extracrtedPage, config, file_name):
+async def photo_searcher(name_extracrtedPage, config, file_name, AREA, NEW, HID_AREA):
 
     global x_paste
     global y_paste
@@ -56,7 +56,7 @@ async def photo_searcher(name_extracrtedPage, config, file_name):
         img = cv2.imread(f'IMG/INPUT/{name_extracrtedPage}')
 
         faces = cv2.CascadeClassifier('faces.xml')
-        file_path = os.path.join('IMG/AREA/', f'{file_name}.png')
+        file_path = os.path.join('IMG/AREA/', name_extracrtedPage)
 
         result = faces.detectMultiScale(img, scaleFactor=scaleFactor, minNeighbors=3)
 
@@ -72,18 +72,18 @@ async def photo_searcher(name_extracrtedPage, config, file_name):
                     image_heigh = h
                     area = img[y:y + h, x:x + w]
 
-                    cv2.imwrite(f'IMG/AREA/{name_extracrtedPage}', area)
-                    cv2.imwrite(f'IMG/NEW/{name_extracrtedPage}', img)
+                    cv2.imwrite(AREA, area)
+                    cv2.imwrite(NEW, img)
 
-                    img_2 = cv2.imread(f'IMG/AREA/{name_extracrtedPage}')
+                    img_2 = cv2.imread(AREA)
 
                     cartoon_image = cv2.stylization(img_2, sigma_s=10, sigma_r=0.5)
 
-                    cv2.imwrite(f'IMG/AREA/{name_extracrtedPage}', cartoon_image)
+                    cv2.imwrite(AREA, cartoon_image)
 
-                    background_path = f'IMG/NEW/{file_name}.png'
-                    overlay_path = f'IMG/AREA/{file_name}.png'
-                    output_path = f'IMG/HID&AREA/{file_name}.png'
+                    background_path = NEW
+                    overlay_path = AREA
+                    output_path = HID_AREA
 
                     background = Image.open(background_path)
                     overlay = Image.open(overlay_path)
@@ -111,11 +111,11 @@ async def photo_searcher(name_extracrtedPage, config, file_name):
 
             scaleFactor += 1
 
-async def text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name):
+async def text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name, AREA, NEW):
 
     global img
 
-    hid_and_area_list = await photo_searcher(name_extracrtedPage, config, file_name)
+    hid_and_area_list = await photo_searcher(name_extracrtedPage, config, file_name, AREA, NEW, HID_AREA)
 
     ko_vo_of_founded_elems = 0
     country_index_kol_vo = 0
@@ -534,6 +534,8 @@ async def fifth_page(project_path, file_name, pdf_list):
     text_to_add = f"{file_name}@example.com"
     HID_AREA = f'IMG/HID&AREA/{file_name}5.png'
     HID = f'IMG/HID/{file_name}5.png'
+    AREA = f'IMG/AREA/{file_name}5.png'
+    NEW = f'IMG/NEW/{file_name}5.png'
     save_await = 0
 
     images = convert_from_path(input_pdf_path, first_page=0, last_page=6,
@@ -563,7 +565,7 @@ async def fifth_page(project_path, file_name, pdf_list):
 
     await asyncio.sleep(2)
 
-    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name)
+    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name, AREA, NEW)
 
     if save_await > 0:
 
@@ -578,6 +580,8 @@ async def fourth_page(project_path, file_name, pdf_list):
     text_to_add = f"{file_name}@example.com"
     HID_AREA = f'IMG/HID&AREA/{file_name}4.png'
     HID = f'IMG/HID/{file_name}4.png'
+    AREA = f'IMG/AREA/{file_name}4.png'
+    NEW = f'IMG/NEW/{file_name}4.png'
     save_await = 0
 
     images = convert_from_path(input_pdf_path, first_page=0, last_page=6,
@@ -607,7 +611,7 @@ async def fourth_page(project_path, file_name, pdf_list):
 
     await asyncio.sleep(2)
 
-    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name)
+    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name, AREA, NEW)
 
     if save_await > 0:
 
@@ -622,6 +626,8 @@ async def third_page(project_path, file_name, pdf_list):
     text_to_add = f"{file_name}@example.com"
     HID_AREA = f'IMG/HID&AREA/{file_name}3.png'
     HID = f'IMG/HID/{file_name}3.png'
+    AREA = f'IMG/AREA/{file_name}3.png'
+    NEW = f'IMG/NEW/{file_name}3.png'
     save_await = 0
 
     images = convert_from_path(input_pdf_path, first_page=0, last_page=6,
@@ -651,7 +657,7 @@ async def third_page(project_path, file_name, pdf_list):
 
     await asyncio.sleep(2)
 
-    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name)
+    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name, AREA, NEW)
 
     if save_await > 0:
 
@@ -666,6 +672,8 @@ async def second_page(project_path, file_name, pdf_list):
     text_to_add = f"{file_name}@example.com"
     HID_AREA = f'IMG/HID&AREA/{file_name}2.png'
     HID = f'IMG/HID/{file_name}2.png'
+    AREA = f'IMG/AREA/{file_name}2.png'
+    NEW = f'IMG/NEW/{file_name}2.png'
     save_await = 0
 
     images = convert_from_path(input_pdf_path, first_page=0, last_page=6,
@@ -697,7 +705,7 @@ async def second_page(project_path, file_name, pdf_list):
 
     await asyncio.sleep(2)
 
-    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name)
+    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name, AREA, NEW)
 
     if save_await > 0:
 
@@ -714,6 +722,8 @@ async def first_page(project_path, file_name):
     text_to_add = f"{file_name}@example.com"
     HID_AREA = f'IMG/HID&AREA/{name_extracrtedPage}'
     HID = f'IMG/HID/{name_extracrtedPage}'
+    AREA = f'IMG/AREA/{file_name}.png'
+    NEW = f'IMG/NEW/{file_name}.png'
     png_list = []
     save_await = 0
 
@@ -749,7 +759,7 @@ async def first_page(project_path, file_name):
 
     await asyncio.sleep(2)
 
-    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name)
+    await text_searcher(HID_AREA, HID, name_extracrtedPage, config, file_name, AREA, NEW)
 
     if save_await > 0:
 
